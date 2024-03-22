@@ -24,9 +24,10 @@ def homepage():
 
     session["cart"] = {}
     session["order_total"] = 0
+    # print("Cart:", session["cart"])
 
     return render_template(
-        "index.html", coffee_price=COFFEE_PRICE, tea_price=TEA_PRICE
+        "index.html", coffee_price=COFFEE_PRICE, tea_price=TEA_PRICE, menu_items=menu_items
     )
 
 
@@ -39,7 +40,7 @@ def update_cart():
 
     item = request.args.get("item")
 
-    session["cart"][item] += 1
+    session["cart"].get(item)
     session["order_total"] += get_item_price(item)
 
     return jsonify({"cart": session["cart"], "total": session["order_total"]})
@@ -48,6 +49,7 @@ def update_cart():
 def get_item_price(item_name):
     """Get the price of an item by name. DO NOT MODIFY this function."""
 
+    # print("item:", item_name)
     if "Coffee" in item_name:
         return COFFEE_PRICE
     else:
